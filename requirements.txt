@@ -3,6 +3,8 @@ numpy
 prophet
 google-cloud-bigquery
 google-cloud-storage
-dvc[gcs]
+dvc
+dvc-gs
 plotly
 pyarrow
+db-dtypes
