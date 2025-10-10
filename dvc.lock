@@ -1,0 +1,80 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: data/raw/raw_data.csv
+      hash: md5
+      md5: 4af6ffba52209b50525de3a231f6f47a
+      size: 23830
+    - path: src/preprocess.py
+      hash: md5
+      md5: f09a4e5f0fc42a0d6ac699febdc4a3ee
+      size: 2950
+    params:
+      params.yaml:
+        preprocess.method: iqr
+        preprocess.window: 15
+    outs:
+    - path: data/processed/df_test.csv
+      hash: md5
+      md5: f95dead1171f729a38ccce30f5373fc3
+      size: 4904
+    - path: data/processed/df_train.csv
+      hash: md5
+      md5: a5f56f1fc45247583b5a1a14c0dfa8bb
+      size: 18907
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/df_test.csv
+      hash: md5
+      md5: f95dead1171f729a38ccce30f5373fc3
+      size: 4904
+    - path: data/processed/df_train.csv
+      hash: md5
+      md5: a5f56f1fc45247583b5a1a14c0dfa8bb
+      size: 18907
+    - path: src/train.py
+      hash: md5
+      md5: 7d0d0f4a0e92280e8fc2980e7978022b
+      size: 1526
+    params:
+      params.yaml:
+        train.base: 10
+        train.hyperparameters:
+          seasonality_mode: multiplicative
+          changepoint_prior_scale: 0.05
+          seasonality_prior_scale: 10.0
+          holidays_prior_scale: 10.0
+          changepoint_range: 0.8
+        train.transform: log
+    outs:
+    - path: models/prophet_model.pkl
+      hash: md5
+      md5: 041496f597e3eb5a2249ce35cbcff74c
+      size: 86517
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/processed/df_test.csv
+      hash: md5
+      md5: f95dead1171f729a38ccce30f5373fc3
+      size: 4904
+    - path: models/prophet_model.pkl
+      hash: md5
+      md5: 041496f597e3eb5a2249ce35cbcff74c
+      size: 86517
+    - path: src/evaluate.py
+      hash: md5
+      md5: ee0f3803646022a4994883fb91e27564
+      size: 2038
+    params:
+      params.yaml:
+        evaluate.base: 10
+        evaluate.transform: log
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 7ceb6fc9ed40a4fcc6e4cea870a2ea13
+      size: 109
