@@ -3,6 +3,7 @@ from google.cloud import bigquery,storage
 import pandas as pd
 import logging
 import numpy as np
+import yaml
 
 if not os.path.exists("data/raw"):
     logging.error("raw data directory not found")
@@ -15,16 +16,36 @@ df = df.sort_values(by="date", ascending=True).reset_index(drop=True)
 df_train = df[:int(len(df)*0.8)].reset_index(drop=True)
 df_test = df[int(len(df)*0.8):].reset_index(drop=True)
 
+with open("params.yaml", "r") as f:
+    params = yaml.safe_load(f)
+
+if params['preprocess']['method'].lower() == "iqr":
 # treat outliers by capping them at the lower and upper bounds and to prevent data leakage in the test set we are not using the test set to calculate the bounds
-iqr = df_train['value'].quantile(0.75) - df_train['value'].quantile(0.25)
-lower_bound = df_train['value'].quantile(0.25) - 1.5 * iqr
-upper_bound = df_train['value'].quantile(0.75) + 1.5 * iqr
+    iqr = df_train['value'].quantile(0.75) - df_train['value'].quantile(0.25)
+    lower_bound = df_train['value'].quantile(0.25) - 1.5 * iqr
+    upper_bound = df_train['value'].quantile(0.75) + 1.5 * iqr
 
-df_train['value'] = np.where(df_train['value'] < lower_bound, lower_bound, df_train['value'])
-df_train['value'] = np.where(df_train['value'] > upper_bound, upper_bound, df_train['value'])
+    df_train['value'] = np.where(df_train['value'] < lower_bound, lower_bound, df_train['value'])
+    df_train['value'] = np.where(df_train['value'] > upper_bound, upper_bound, df_train['value'])
 
-df_test['value'] = np.where(df_test['value'] < lower_bound, lower_bound, df_test['value'])
-df_test['value'] = np.where(df_test['value'] > upper_bound, upper_bound, df_test['value'])
+    df_test['value'] = np.where(df_test['value'] < lower_bound, lower_bound, df_test['value'])
+    df_test['value'] = np.where(df_test['value'] > upper_bound, upper_bound, df_test['value'])
+
+elif params['preprocess']['method'].lower() == "rolling_iqr":
+
+    window = params['preprocess']['window']
+    rolling_iqr = df_train['value'].rolling(window=window).quantile(0.75) - df_train['value'].rolling(window=window).quantile(0.25)
+    lower_bound = df_train['value'].rolling(window=window).quantile(0.25) - 1.5 * rolling_iqr
+    upper_bound = df_train['value'].rolling(window=window).quantile(0.75) + 1.5 * rolling_iqr
+
+    df_train['value'] = np.where(df_train['value'] < lower_bound, lower_bound, df_train['value'])
+    df_train['value'] = np.where(df_train['value'] > upper_bound, upper_bound, df_train['value'])
+
+    df_test['value'] = np.where(df_test['value'] < lower_bound, lower_bound, df_test['value'])
+    df_test['value'] = np.where(df_test['value'] > upper_bound, upper_bound, df_test['value'])
+
+    df_train['value'] = df_train['value'].fillna(df_train['value'].mean()) # filling the missing values with the mean of the training set because since the rolling window is used to calculate the bounds, there will be missing values in the training set
+
 
 if not os.path.exists("data/processed"):
     os.makedirs("data/processed")
