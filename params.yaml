@@ -7,7 +7,7 @@ train:
   base: 2  # "10" or "e" or 2
   hyperparameters:
     seasonality_mode: multiplicative
-    changepoint_prior_scale: 0.05
+    changepoint_prior_scale: 0.01
     seasonality_prior_scale: 10.0
     holidays_prior_scale: 10.0
     changepoint_range: 0.8

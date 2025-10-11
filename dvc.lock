@@ -44,7 +44,7 @@ stages:
         train.base: 2
         train.hyperparameters:
           seasonality_mode: multiplicative
-          changepoint_prior_scale: 0.05
+          changepoint_prior_scale: 0.01
           seasonality_prior_scale: 10.0
           holidays_prior_scale: 10.0
           changepoint_range: 0.8
@@ -52,8 +52,8 @@ stages:
     outs:
     - path: models/prophet_model.pkl
       hash: md5
-      md5: 9acbd63acc2b9224298220e8ba5bc4ad
-      size: 86475
+      md5: 58ef605d1be32f3e709aceb1cbe28436
+      size: 86471
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -63,8 +63,8 @@ stages:
       size: 4904
     - path: models/prophet_model.pkl
       hash: md5
-      md5: 9acbd63acc2b9224298220e8ba5bc4ad
-      size: 86475
+      md5: 58ef605d1be32f3e709aceb1cbe28436
+      size: 86471
     - path: src/evaluate.py
       hash: md5
       md5: e2f926bd1dbf41c1c7a0e2cd63d15c4c
@@ -76,5 +76,5 @@ stages:
     outs:
     - path: metrics.json
       hash: md5
-      md5: 4ffb2e5aaf5d9a6a7869c0673883c2de
-      size: 125
+      md5: 4f9c934a82ae2cf1193e23c3086ae7da
+      size: 126
