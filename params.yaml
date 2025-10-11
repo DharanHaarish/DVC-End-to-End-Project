@@ -1,18 +1,18 @@
 preprocess:
-  method: "iqr"
+  method: iqr
   window: 15
 
 train:
-  transform: "log" # "log" or "none"
-  base: 10 # "10" or "e" or 2
+  transform: log   # "log" or "none"
+  base: 2  # "10" or "e" or 2
   hyperparameters:
-    seasonality_mode: "multiplicative"
+    seasonality_mode: multiplicative
     changepoint_prior_scale: 0.05
     seasonality_prior_scale: 10.0
     holidays_prior_scale: 10.0
     changepoint_range: 0.8
 
 evaluate:
-  transform: "log" # "log" or "none"
-  base: 10 # "10" or "e" or 2
+  transform: log   # "log" or "none"
+  base: 2  # "10" or "e" or 2
 
