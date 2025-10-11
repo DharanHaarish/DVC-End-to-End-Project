@@ -20,25 +20,24 @@ This is a production-ready ML pipeline that:
 
 DVC-End-to-End-Project/
 ├── data/
-│ ├── raw/ # Raw data from BigQuery
-│ │ └── raw_data.csv
-│ └── processed/ # Preprocessed train/test splits
-│ ├── df_train.csv
-│ └── df_test.csv
+│   ├── raw/                     # Raw data from BigQuery
+│   │   └── raw_data.csv
+│   └── processed/               # Preprocessed train/test splits
+│       ├── df_train.csv
+│       └── df_test.csv
 ├── models/
-│ └── prophet_model.pkl # Trained Prophet model (versioned)
+│   └── prophet_model.pkl        # Trained Prophet model (versioned)
 ├── src/
-│ ├── fetch.py # Fetch data from BigQuery
-│ ├── preprocess.py # Outlier detection & train/test split
-│ ├── train.py # Train Prophet with log transforms
-│ └── evaluate.py # Calculate evaluation metrics
-├── dvc.yaml # Pipeline definition (stages & deps)
-├── params.yaml # All hyperparameters (single source of truth)
-├── metrics.json # Latest evaluation metrics
-├── dvc.lock # Locked pipeline state (like package-lock.json)
-├── requirements.txt # Python dependencies
+│   ├── fetch.py                 # Fetch data from BigQuery
+│   ├── preprocess.py            # Outlier detection & train/test split
+│   ├── train.py                 # Train Prophet with log transforms
+│   └── evaluate.py              # Calculate evaluation metrics
+├── dvc.yaml                     # Pipeline definition (stages & dependencies)
+├── params.yaml                  # All hyperparameters (single source of truth)
+├── metrics.json                 # Latest evaluation metrics
+├── dvc.lock                     # Locked pipeline state (like package-lock.json)
+├── requirements.txt             # Python dependencies
 
-## 🔧 Pipeline Stages
 
 The pipeline is defined in `dvc.yaml`:
 
@@ -149,5 +148,6 @@ After running the pipeline, `metrics.json` contains:
 - **MPE** (Mean Percentage Error): Average % error (shows bias direction)
 
 **Lower is better for all metrics.**
+
 
 ---
