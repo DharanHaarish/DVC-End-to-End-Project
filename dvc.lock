@@ -9,8 +9,8 @@ stages:
       size: 23830
     - path: src/preprocess.py
       hash: md5
-      md5: f09a4e5f0fc42a0d6ac699febdc4a3ee
-      size: 2950
+      md5: d19f1e9b3ac0d5d61ba52a8639391235
+      size: 2891
     params:
       params.yaml:
         preprocess.method: iqr
@@ -37,14 +37,14 @@ stages:
       size: 18907
     - path: src/train.py
       hash: md5
-      md5: 7d0d0f4a0e92280e8fc2980e7978022b
-      size: 1526
+      md5: 71352adc0e23d1aeb122f70696589c84
+      size: 1476
     params:
       params.yaml:
-        train.base: 10
+        train.base: 2
         train.hyperparameters:
           seasonality_mode: multiplicative
-          changepoint_prior_scale: 0.05
+          changepoint_prior_scale: 0.01
           seasonality_prior_scale: 10.0
           holidays_prior_scale: 10.0
           changepoint_range: 0.8
@@ -52,8 +52,8 @@ stages:
     outs:
     - path: models/prophet_model.pkl
       hash: md5
-      md5: 041496f597e3eb5a2249ce35cbcff74c
-      size: 86517
+      md5: 58ef605d1be32f3e709aceb1cbe28436
+      size: 86471
   evaluate:
     cmd: python src/evaluate.py
     deps:
@@ -63,18 +63,18 @@ stages:
       size: 4904
     - path: models/prophet_model.pkl
       hash: md5
-      md5: 041496f597e3eb5a2249ce35cbcff74c
-      size: 86517
+      md5: 58ef605d1be32f3e709aceb1cbe28436
+      size: 86471
     - path: src/evaluate.py
       hash: md5
-      md5: ee0f3803646022a4994883fb91e27564
-      size: 2038
+      md5: e2f926bd1dbf41c1c7a0e2cd63d15c4c
+      size: 1975
     params:
       params.yaml:
-        evaluate.base: 10
+        evaluate.base: 2
         evaluate.transform: log
     outs:
     - path: metrics.json
       hash: md5
-      md5: 7ceb6fc9ed40a4fcc6e4cea870a2ea13
-      size: 109
+      md5: 4f9c934a82ae2cf1193e23c3086ae7da
+      size: 126
