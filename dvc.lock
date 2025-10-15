@@ -7,10 +7,12 @@ stages:
       hash: md5
       md5: 4af6ffba52209b50525de3a231f6f47a
       size: 23830
+      isexec: true
     - path: src/preprocess.py
       hash: md5
-      md5: d19f1e9b3ac0d5d61ba52a8639391235
-      size: 2891
+      md5: f09a4e5f0fc42a0d6ac699febdc4a3ee
+      size: 2950
+      isexec: true
     params:
       params.yaml:
         preprocess.method: iqr
@@ -18,33 +20,38 @@ stages:
     outs:
     - path: data/processed/df_test.csv
       hash: md5
-      md5: f95dead1171f729a38ccce30f5373fc3
-      size: 4904
+      md5: 950a087d0d487166d9e793e2d5e10378
+      size: 4683
+      isexec: true
     - path: data/processed/df_train.csv
       hash: md5
-      md5: a5f56f1fc45247583b5a1a14c0dfa8bb
-      size: 18907
+      md5: 4d5cdcbed06df1d27db9813613ce1ba2
+      size: 18030
+      isexec: true
   train:
     cmd: python src/train.py
     deps:
     - path: data/processed/df_test.csv
       hash: md5
-      md5: f95dead1171f729a38ccce30f5373fc3
-      size: 4904
+      md5: 950a087d0d487166d9e793e2d5e10378
+      size: 4683
+      isexec: true
     - path: data/processed/df_train.csv
       hash: md5
-      md5: a5f56f1fc45247583b5a1a14c0dfa8bb
-      size: 18907
+      md5: 4d5cdcbed06df1d27db9813613ce1ba2
+      size: 18030
+      isexec: true
     - path: src/train.py
       hash: md5
-      md5: 71352adc0e23d1aeb122f70696589c84
-      size: 1476
+      md5: 7d0d0f4a0e92280e8fc2980e7978022b
+      size: 1526
+      isexec: true
     params:
       params.yaml:
         train.base: 2
         train.hyperparameters:
           seasonality_mode: multiplicative
-          changepoint_prior_scale: 0.01
+          changepoint_prior_scale: 0.1
           seasonality_prior_scale: 10.0
           holidays_prior_scale: 10.0
           changepoint_range: 0.8
@@ -52,23 +59,27 @@ stages:
     outs:
     - path: models/prophet_model.pkl
       hash: md5
-      md5: 58ef605d1be32f3e709aceb1cbe28436
-      size: 86471
+      md5: c82713039006cba4292da861ab0e138e
+      size: 86338
+      isexec: true
   evaluate:
     cmd: python src/evaluate.py
     deps:
     - path: data/processed/df_test.csv
       hash: md5
-      md5: f95dead1171f729a38ccce30f5373fc3
-      size: 4904
+      md5: 950a087d0d487166d9e793e2d5e10378
+      size: 4683
+      isexec: true
     - path: models/prophet_model.pkl
       hash: md5
-      md5: 58ef605d1be32f3e709aceb1cbe28436
-      size: 86471
+      md5: c82713039006cba4292da861ab0e138e
+      size: 86338
+      isexec: true
     - path: src/evaluate.py
       hash: md5
-      md5: e2f926bd1dbf41c1c7a0e2cd63d15c4c
-      size: 1975
+      md5: b76bdd773bc3ecac9a01784726ca5b8e
+      size: 2258
+      isexec: true
     params:
       params.yaml:
         evaluate.base: 2
@@ -76,5 +87,6 @@ stages:
     outs:
     - path: metrics.json
       hash: md5
-      md5: 4f9c934a82ae2cf1193e23c3086ae7da
-      size: 126
+      md5: 089e5d96e4fb96726b5aa8b05e475560
+      size: 122
+      isexec: true
