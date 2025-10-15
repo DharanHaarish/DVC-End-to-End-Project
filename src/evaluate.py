@@ -61,4 +61,10 @@ metric_dict = {
 with open("metrics.json", "w") as f:
     json.dump(metric_dict, f)
 
-print("Metrics saved")
+print("\n" + "="*60)
+print("📊 MODEL EVALUATION METRICS")
+print("="*60)
+for metric_name, metric_value in metric_dict.items():
+    print(f"{metric_name:10s}: {metric_value:.6f}")
+print("="*60)
+print("\nMetrics saved to metrics.json\n")

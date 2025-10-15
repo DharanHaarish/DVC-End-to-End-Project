@@ -2,3 +2,4 @@
 .json
 /metrics.json
 dvc_e2e.json
+/models

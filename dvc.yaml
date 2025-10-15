@@ -21,8 +21,6 @@ stages:
       - train.transform
       - train.base
       - train.hyperparameters
-    outs:
-      - models/prophet_model.pkl
 
   evaluate:
     cmd: python src/evaluate.py 
@@ -33,5 +31,3 @@ stages:
     params:
       - evaluate.transform
       - evaluate.base
-    metrics:
-      - metrics.json
